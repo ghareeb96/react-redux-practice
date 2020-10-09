@@ -1,12 +1,56 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import { createStore, combineReducers } from "redux"
 import App from './App';
-import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+
+
+const mathReducer = (state = {
+    id: 1
+}, action) => {
+    switch (action.type) {
+        case "CHANGE_ID":
+            state = {
+                ...state,
+                id: action.payload
+            }
+            break;
+    }
+    return state;
+}
+const userReducer = (state = {
+    name: "Ghareeb",
+    age: 24
+}, action) => {
+    switch (action.type) {
+        case "CHANGE_USER":
+            state = {
+                ...state,
+                name: action.payload,
+                age: action.payload2
+            }
+            break;
+
+    }
+    return state;
+}
+
+const store = createStore(combineReducers({ mathReducer, userReducer }));
+
+store.subscribe(() => {
+    console.log(store.getState())
+})
+store.dispatch({
+    type: "CHANGE_ID",
+    payload: 12
+})
+store.dispatch({
+    type: "CHANGE_USER",
+    payload: "Brandnew Ghareeb",
+    payload2: 2
+})
+
+
+ReactDOM.render(< App />, document.getElementById('root'));
